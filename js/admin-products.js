@@ -1,5 +1,6 @@
 // ============================================================
-// Admin Products
+// Admin Products — Simplified form (no slug/SKU/sub-category/notes/gender)
+// Slug auto-generated from product name.
 // ============================================================
 window.AdminProducts = (() => {
   const PAGE_SIZE = 20;
@@ -23,7 +24,7 @@ window.AdminProducts = (() => {
     let q = sb.from('products').select('*', { count: 'exact' });
     if (search) {
       const safe = search.replace(/[%,]/g, '');
-      q = q.or(`name.ilike.%${safe}%,sku.ilike.%${safe}%`);
+      q = q.or(`name.ilike.%${safe}%`);
     }
     if (cat) q = q.eq('category_id', cat);
     if (activeF === 'active') q = q.eq('is_active', true);
@@ -42,7 +43,7 @@ window.AdminProducts = (() => {
     const tbody = document.getElementById('products-tbody');
     if (!tbody) return;
     if (!items.length) {
-      tbody.innerHTML = `<tr><td colspan="8" class="a-empty">No products found.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" class="a-empty">No products found.</td></tr>`;
     } else {
       tbody.innerHTML = items.map(p => {
         const img = (p.images && p.images[0]) || '';
@@ -53,8 +54,7 @@ window.AdminProducts = (() => {
         return `
         <tr>
           <td><img src="${AdminUI.escape(img)}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:6px;background:#000;" onerror="this.style.display='none';"></td>
-          <td><strong>${AdminUI.escape(p.name)}</strong><br><small style="color:var(--a-muted);">${AdminUI.escape(p.gender || '')}</small></td>
-          <td>${AdminUI.escape(p.sku || '—')}</td>
+          <td><strong>${AdminUI.escape(p.name)}</strong></td>
           <td>${cat ? AdminUI.escape(cat.name) : '—'}</td>
           <td>
             <div style="color:var(--a-gold-l);font-weight:600;">${AdminUI.fmtPrice(sell)}</div>
@@ -74,6 +74,16 @@ window.AdminProducts = (() => {
     document.getElementById('prod-load-more').style.display = items.length < total ? '' : 'none';
   }
 
+  // Auto slug generator — from name
+  function slugify(str) {
+    return String(str || '').toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      || ('product-' + Date.now());
+  }
+
   function openEditor(product = null) {
     const form = document.getElementById('product-form');
     form.reset();
@@ -84,7 +94,7 @@ window.AdminProducts = (() => {
 
     if (product) {
       form.querySelector('[name=id]').value = product.id || '';
-      ['name','slug','sku','sub_category','base_price','cost_price','old_price','stock','short_description','description','notes_top','notes_middle','notes_base','gender','sort_order'].forEach(k => {
+      ['name','base_price','cost_price','old_price','stock','short_description','description','sort_order'].forEach(k => {
         const el = form.querySelector(`[name=${k}]`);
         if (el) el.value = product[k] ?? '';
       });
@@ -196,20 +206,14 @@ window.AdminProducts = (() => {
     const id = fd.id;
     const payload = {
       name: (fd.name || '').trim(),
-      slug: (fd.slug || '').trim() || String(fd.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-      sku: fd.sku || null,
+      slug: slugify(fd.name),   // auto-generate
       category_id: fd.category_id || null,
-      sub_category: fd.sub_category || null,
       short_description: fd.short_description || null,
       description: fd.description || null,
-      notes_top: fd.notes_top || null,
-      notes_middle: fd.notes_middle || null,
-      notes_base: fd.notes_base || null,
       base_price: Number(fd.base_price) || 0,
       cost_price: Number(fd.cost_price) || 0,
       old_price: Number(fd.old_price) || null,
       stock: Number(fd.stock) || 0,
-      gender: fd.gender || 'Unisex',
       sort_order: Number(fd.sort_order) || 0,
       variants: getVariants(),
       images: currentImages,
@@ -232,7 +236,16 @@ window.AdminProducts = (() => {
         AdminUI.toast('Product updated', 'success');
       } else {
         const { error } = await sb.from('products').insert(payload);
-        if (error) throw error;
+        if (error) {
+          // Agar slug already exists ho jaye to unique banao
+          if (error.code === '23505') {
+            payload.slug = payload.slug + '-' + Date.now();
+            const { error: e2 } = await sb.from('products').insert(payload);
+            if (e2) throw e2;
+          } else {
+            throw error;
+          }
+        }
         AdminUI.toast('Product added', 'success');
       }
       AdminUI.closeModal('product-modal');

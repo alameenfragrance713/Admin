@@ -1,5 +1,6 @@
 // ============================================================
-// Admin Orders + Messages + Subscribers
+// Admin Orders + Messages + Subscribers (with WhatsApp/Templates)
+// Gender removed. reload() exposed for backup delete refresh.
 // ============================================================
 window.AdminOrders = (() => {
   let orders = [];
@@ -73,6 +74,7 @@ window.AdminOrders = (() => {
           <p><strong>Date:</strong> ${AdminUI.fmtDateTime(order.created_at)}</p>
           <p><strong>Status:</strong> <span class="badge badge-${order.status}">${order.status}</span></p>
           <p><strong>Payment:</strong> ${AdminUI.escape(order.payment_method || 'COD')}</p>
+          ${order.coupon_code ? `<p><strong>Coupon:</strong> ${AdminUI.escape(order.coupon_code)} (-${AdminUI.fmtPrice(order.coupon_discount)})</p>` : ''}
         </div>
         <div class="order-info-block">
           <h4>Customer</h4>
@@ -108,6 +110,7 @@ window.AdminOrders = (() => {
         </div>
         <div style="text-align:right;margin-top:14px;">
           <p>Subtotal: <strong>${AdminUI.fmtPrice(order.subtotal)}</strong></p>
+          ${order.coupon_discount > 0 ? `<p>Coupon (-${AdminUI.escape(order.coupon_code || '')}): <strong style="color:var(--a-green);">-${AdminUI.fmtPrice(order.coupon_discount)}</strong></p>` : ''}
           <p>Shipping: <strong>${AdminUI.fmtPrice(order.shipping)}</strong></p>
           <p>Total Cost: <strong style="color:var(--a-muted);">${AdminUI.fmtPrice(totalCost)}</strong></p>
           <p style="font-size:1.15rem;">Profit: <strong style="color:${totalProfit >= 0 ? 'var(--a-green)' : 'var(--a-red)'};">${AdminUI.fmtPrice(totalProfit)}</strong></p>
@@ -132,6 +135,7 @@ window.AdminOrders = (() => {
           <button class="btn btn-gold" id="order-save-btn">Save</button>
           <button class="btn btn-ghost" id="order-print-btn">Print Invoice</button>
           <a class="btn btn-ghost" id="order-wa-btn" target="_blank" rel="noopener">WhatsApp</a>
+          <button class="btn btn-ghost" id="order-copy-msg">📋 Copy Confirmation Msg</button>
           <button class="btn btn-danger" id="order-del-btn">Delete</button>
         </div>
       </div>
@@ -140,6 +144,17 @@ window.AdminOrders = (() => {
     const waNum = (order.phone || '').replace(/[^0-9]/g, '');
     const waMsg = `Assalam o Alaikum ${order.customer_name}, order ${order.order_number} (Rs. ${Number(order.total).toLocaleString('en-PK')}) - status: ${order.status}.`;
     document.getElementById('order-wa-btn').href = `https://wa.me/${waNum.startsWith('92') ? waNum : '92' + waNum.replace(/^0/, '')}?text=${encodeURIComponent(waMsg)}`;
+
+    document.getElementById('order-copy-msg').onclick = async () => {
+      const tpl = window.getMessageTemplate('orderConfirmation');
+      const filled = window.fillTemplate(tpl, {
+        name: order.customer_name,
+        order_number: order.order_number,
+        total: 'Rs. ' + Number(order.total).toLocaleString('en-PK')
+      });
+      const ok = await AdminUI.copyToClipboard(filled);
+      AdminUI.toast(ok ? 'Copied! Paste in WhatsApp/Email.' : 'Copy failed', ok ? 'success' : 'error');
+    };
 
     document.getElementById('order-save-btn').onclick = async () => {
       const s = document.getElementById('order-status-select').value;
@@ -151,7 +166,7 @@ window.AdminOrders = (() => {
       load();
     };
     document.getElementById('order-del-btn').onclick = async () => {
-      if (!confirm('Delete this order?')) return;
+      if (!confirm('Delete this order permanently?')) return;
       await sb.from('order_items').delete().eq('order_id', order.id);
       const { error } = await sb.from('orders').delete().eq('id', order.id);
       if (error) return AdminUI.toast('Delete failed', 'error');
@@ -175,7 +190,12 @@ window.AdminOrders = (() => {
       <table><thead><tr><th>Product</th><th>Size</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead><tbody>
         ${items.map(it => `<tr><td>${it.product_name}</td><td>${it.variant_size || '-'}</td><td>${it.quantity}</td><td>Rs. ${Number(it.unit_price).toLocaleString('en-PK')}</td><td>Rs. ${Number(it.line_total).toLocaleString('en-PK')}</td></tr>`).join('')}
       </tbody></table>
-      <div class="totals"><p>Subtotal: Rs. ${Number(order.subtotal).toLocaleString('en-PK')}</p><p>Shipping: Rs. ${Number(order.shipping).toLocaleString('en-PK')}</p><p class="grand">Total: Rs. ${Number(order.total).toLocaleString('en-PK')}</p></div>
+      <div class="totals">
+        <p>Subtotal: Rs. ${Number(order.subtotal).toLocaleString('en-PK')}</p>
+        ${order.coupon_discount > 0 ? `<p>Coupon (${order.coupon_code}): -Rs. ${Number(order.coupon_discount).toLocaleString('en-PK')}</p>` : ''}
+        <p>Shipping: Rs. ${Number(order.shipping).toLocaleString('en-PK')}</p>
+        <p class="grand">Total: Rs. ${Number(order.total).toLocaleString('en-PK')}</p>
+      </div>
       </body></html>`;
     w.document.write(html);
     w.document.close();
@@ -184,10 +204,10 @@ window.AdminOrders = (() => {
 
   function exportCsv() {
     if (!orders.length) return AdminUI.toast('No orders', 'error');
-    const headers = ['Order #','Date','Customer','Phone','City','Subtotal','Shipping','Total','Profit','Status'];
+    const headers = ['Order #','Date','Customer','Phone','City','Subtotal','Coupon','Coupon Disc','Shipping','Total','Profit','Status'];
     const rows = orders.map(o => {
       const profit = Number(o.subtotal || 0) - (costMap[o.id] || 0);
-      return [o.order_number, o.created_at, o.customer_name, o.phone, o.city, o.subtotal, o.shipping, o.total, profit, o.status];
+      return [o.order_number, o.created_at, o.customer_name, o.phone, o.city, o.subtotal, o.coupon_code || '', o.coupon_discount || 0, o.shipping, o.total, profit, o.status];
     });
     const csv = [headers, ...rows].map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
@@ -214,12 +234,18 @@ window.AdminOrders = (() => {
   return { init, load, reload: load };
 })();
 
+// ============================================================
+// Messages
+// ============================================================
 window.AdminMessages = {
   async load() {
     const { data } = await sb.from('messages').select('*').order('created_at', { ascending: false }).limit(200);
     const tbody = document.getElementById('messages-tbody');
     if (!tbody) return;
-    if (!data || !data.length) { tbody.innerHTML = `<tr><td colspan="6" class="a-empty">No messages.</td></tr>`; return; }
+    if (!data || !data.length) {
+      tbody.innerHTML = `<tr><td colspan="6" class="a-empty">No messages.</td></tr>`;
+      return;
+    }
     tbody.innerHTML = data.map(m => `
       <tr style="${m.is_read ? '' : 'background:rgba(212,175,55,.05);'}">
         <td>${AdminUI.fmtDateTime(m.created_at)}</td>
@@ -227,30 +253,86 @@ window.AdminMessages = {
         <td>${AdminUI.escape(m.email || '')}${m.phone ? `<br><small>${AdminUI.escape(m.phone)}</small>` : ''}</td>
         <td>${AdminUI.escape(m.subject || '—')}</td>
         <td style="max-width:340px;">${AdminUI.escape(m.message)}</td>
-        <td class="actions">${m.is_read ? '' : `<button class="btn btn-ghost btn-sm" data-read="${m.id}">Mark Read</button>`}<button class="btn btn-danger btn-sm" data-mdel="${m.id}">Delete</button></td>
+        <td class="actions">
+          ${m.is_read ? '' : `<button class="btn btn-ghost btn-sm" data-read="${m.id}">Mark Read</button>`}
+          ${m.phone ? `<a class="btn btn-ghost btn-sm" href="https://wa.me/${(m.phone || '').replace(/[^0-9]/g, '').replace(/^0/, '92')}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+          <button class="btn btn-ghost btn-sm" data-copy-msg="${m.id}">Copy Reply</button>
+          <button class="btn btn-danger btn-sm" data-mdel="${m.id}">Delete</button>
+        </td>
       </tr>
     `).join('');
-    tbody.querySelectorAll('[data-read]').forEach(b => b.onclick = async () => { await sb.from('messages').update({ is_read: true }).eq('id', b.dataset.read); AdminMessages.load(); });
-    tbody.querySelectorAll('[data-mdel]').forEach(b => b.onclick = async () => { if (!confirm('Delete?')) return; await sb.from('messages').delete().eq('id', b.dataset.mdel); AdminMessages.load(); });
+
+    tbody.querySelectorAll('[data-read]').forEach(b => b.onclick = async () => {
+      await sb.from('messages').update({ is_read: true }).eq('id', b.dataset.read);
+      AdminMessages.load();
+    });
+    tbody.querySelectorAll('[data-mdel]').forEach(b => b.onclick = async () => {
+      if (!confirm('Delete?')) return;
+      await sb.from('messages').delete().eq('id', b.dataset.mdel);
+      AdminMessages.load();
+    });
+    tbody.querySelectorAll('[data-copy-msg]').forEach(b => b.onclick = async () => {
+      const msg = data.find(x => x.id === b.dataset.copyMsg);
+      if (!msg) return;
+      const tpl = window.getMessageTemplate('contactReply');
+      const filled = window.fillTemplate(tpl, {
+        name: msg.name,
+        subject: msg.subject || 'your inquiry'
+      });
+      const ok = await AdminUI.copyToClipboard(filled);
+      AdminUI.toast(ok ? 'Reply template copied!' : 'Copy failed', ok ? 'success' : 'error');
+    });
   }
 };
 
+// ============================================================
+// Subscribers (with WhatsApp + Copy promo template)
+// ============================================================
 window.AdminSubscribers = {
   async load() {
     const { data } = await sb.from('subscribers').select('*').order('created_at', { ascending: false }).limit(500);
     const tbody = document.getElementById('subs-tbody');
     if (!tbody) return;
-    if (!data || !data.length) { tbody.innerHTML = `<tr><td colspan="3" class="a-empty">No subscribers.</td></tr>`; return; }
+    if (!data || !data.length) {
+      tbody.innerHTML = `<tr><td colspan="3" class="a-empty">No subscribers.</td></tr>`;
+      return;
+    }
     tbody.innerHTML = data.map(s => `
-      <tr><td>${AdminUI.escape(s.email)}</td><td>${AdminUI.fmtDate(s.created_at)}</td><td><button class="btn btn-danger btn-sm" data-sdel="${s.id}">Delete</button></td></tr>
+      <tr>
+        <td>${AdminUI.escape(s.email)}</td>
+        <td>${AdminUI.fmtDate(s.created_at)}</td>
+        <td class="actions">
+          <button class="btn btn-ghost btn-sm" data-copy-promo="${s.id}">Copy Promo</button>
+          <button class="btn btn-danger btn-sm" data-sdel="${s.id}">Delete</button>
+        </td>
+      </tr>
     `).join('');
-    tbody.querySelectorAll('[data-sdel]').forEach(b => b.onclick = async () => { if (!confirm('Delete?')) return; await sb.from('subscribers').delete().eq('id', b.dataset.sdel); AdminSubscribers.load(); });
+
+    tbody.querySelectorAll('[data-sdel]').forEach(b => b.onclick = async () => {
+      if (!confirm('Delete?')) return;
+      await sb.from('subscribers').delete().eq('id', b.dataset.sdel);
+      AdminSubscribers.load();
+    });
+    tbody.querySelectorAll('[data-copy-promo]').forEach(b => b.onclick = async () => {
+      const sub = data.find(x => x.id === b.dataset.copyPromo);
+      if (!sub) return;
+      const tpl = window.getMessageTemplate('newsletterPromo');
+      const filled = window.fillTemplate(tpl, {
+        email: sub.email,
+        coupon_code: 'EID20',
+        discount: '20',
+        store_url: 'https://alameenfragrance.netlify.app/'
+      });
+      const ok = await AdminUI.copyToClipboard(filled);
+      AdminUI.toast(ok ? 'Promo template copied for ' + sub.email : 'Copy failed', ok ? 'success' : 'error');
+    });
+
     document.getElementById('subs-export').onclick = () => {
       const csv = ['email,subscribed_at', ...data.map(s => `"${s.email}","${s.created_at}"`)].join('\n');
       const blob = new Blob([csv], { type: 'text/csv' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = 'subscribers.csv';
+      link.download = 'subscribers-' + new Date().toISOString().slice(0, 10) + '.csv';
       link.click();
     };
   }

@@ -20,7 +20,9 @@
   --a-sidebar: 240px;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -313,6 +315,11 @@ h3 {
   border-radius: var(--a-radius);
   padding: 22px;
   margin-bottom: 22px;
+}
+
+.panel--highlight {
+  border-color: var(--a-gold);
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, .15);
 }
 
 .panel-head {
@@ -1288,6 +1295,44 @@ select.form-control {
   border-radius: 10px;
 }
 
+/* ⭐ NEW: Backup & Broadcast panels */
+.backup-panel,
+.broadcast-panel {
+  border: 1px solid var(--a-gold) !important;
+  background: linear-gradient(135deg, var(--a-bg-1), rgba(212, 175, 55, .04));
+}
+
+.broadcast-preview {
+  font-family: 'Courier New', monospace;
+  font-size: .78rem !important;
+  line-height: 1.6;
+  min-height: 160px !important;
+  background: var(--a-bg-0) !important;
+}
+
+#subs-open-wa-web {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#subs-open-wa-web:hover {
+  border-color: #25d366;
+  color: #25d366;
+}
+
+/* Responsive tweaks for broadcast */
+@media (max-width: 700px) {
+  .broadcast-panel .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .broadcast-panel .btn {
+    width: 100%;
+  }
+}
+
+/* Print */
 @media print {
 
   .admin-sidebar,
