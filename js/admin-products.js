@@ -1,6 +1,5 @@
 // ============================================================
-// Admin Products — Simplified form (no slug/SKU/sub-category/notes/gender)
-// Slug auto-generated from product name.
+// Admin Products — per-variant price / old / cost / stock
 // ============================================================
 window.AdminProducts = (() => {
   const PAGE_SIZE = 20;
@@ -24,7 +23,7 @@ window.AdminProducts = (() => {
     let q = sb.from('products').select('*', { count: 'exact' });
     if (search) {
       const safe = search.replace(/[%,]/g, '');
-      q = q.or(`name.ilike.%${safe}%`);
+      q = q.or(`name.ilike.%${safe}%,sku.ilike.%${safe}%`);
     }
     if (cat) q = q.eq('category_id', cat);
     if (activeF === 'active') q = q.eq('is_active', true);
@@ -42,25 +41,43 @@ window.AdminProducts = (() => {
   function render() {
     const tbody = document.getElementById('products-tbody');
     if (!tbody) return;
+
     if (!items.length) {
-      tbody.innerHTML = `<tr><td colspan="7" class="a-empty">No products found.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" class="a-empty">No products found.</td></tr>`;
     } else {
       tbody.innerHTML = items.map(p => {
         const img = (p.images && p.images[0]) || '';
         const cat = categories.find(c => c.id === p.category_id);
-        const sell = Number(p.base_price) || 0;
-        const cost = Number(p.cost_price) || 0;
-        const margin = sell > 0 ? (((sell - cost) / sell) * 100).toFixed(0) : 0;
-        return `
-        <tr>
-          <td><img src="${AdminUI.escape(img)}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:6px;background:#000;" onerror="this.style.display='none';"></td>
-          <td><strong>${AdminUI.escape(p.name)}</strong></td>
-          <td>${cat ? AdminUI.escape(cat.name) : '—'}</td>
-          <td>
+        const variants = Array.isArray(p.variants) ? p.variants : [];
+
+        let priceDisplay;
+        if (variants.length > 0) {
+          const minPrice = Math.min(...variants.map(v => Number(v.price) || 0).filter(x => x > 0));
+          const minCost = Math.min(...variants.map(v => Number(v.cost_price) || 0).filter(x => x >= 0));
+          const minMargin = minPrice > 0 ? (((minPrice - minCost) / minPrice) * 100).toFixed(0) : 0;
+          priceDisplay = `
+            <div style="color:var(--a-gold-l);font-weight:600;">From ${AdminUI.fmtPrice(minPrice)}</div>
+            <div style="color:var(--a-muted);font-size:.72rem;">${variants.length} variant${variants.length > 1 ? 's' : ''}</div>
+            <div style="color:var(--a-green);font-size:.68rem;">Margin: ${minMargin}%+</div>
+          `;
+        } else {
+          const sell = Number(p.base_price) || 0;
+          const cost = Number(p.cost_price) || 0;
+          const margin = sell > 0 ? (((sell - cost) / sell) * 100).toFixed(0) : 0;
+          priceDisplay = `
             <div style="color:var(--a-gold-l);font-weight:600;">${AdminUI.fmtPrice(sell)}</div>
             <div style="color:var(--a-muted);font-size:.72rem;">Cost: ${AdminUI.fmtPrice(cost)}</div>
             <div style="color:var(--a-green);font-size:.68rem;">Margin: ${margin}%</div>
-          </td>
+          `;
+        }
+
+        return `
+        <tr>
+          <td><img src="${AdminUI.escape(img)}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:6px;background:#000;" onerror="this.style.display='none';"></td>
+          <td><strong>${AdminUI.escape(p.name)}</strong><br><small style="color:var(--a-muted);">${AdminUI.escape(p.gender || '')}</small></td>
+          <td>${AdminUI.escape(p.sku || '—')}</td>
+          <td>${cat ? AdminUI.escape(cat.name) : '—'}</td>
+          <td>${priceDisplay}</td>
           <td>${p.stock ?? 0}</td>
           <td><span class="badge ${p.is_active ? 'badge-active' : 'badge-inactive'}">${p.is_active ? 'Active' : 'Inactive'}</span></td>
           <td class="actions">
@@ -74,16 +91,6 @@ window.AdminProducts = (() => {
     document.getElementById('prod-load-more').style.display = items.length < total ? '' : 'none';
   }
 
-  // Auto slug generator — from name
-  function slugify(str) {
-    return String(str || '').toLowerCase().trim()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '')
-      || ('product-' + Date.now());
-  }
-
   function openEditor(product = null) {
     const form = document.getElementById('product-form');
     form.reset();
@@ -94,7 +101,7 @@ window.AdminProducts = (() => {
 
     if (product) {
       form.querySelector('[name=id]').value = product.id || '';
-      ['name','base_price','cost_price','old_price','stock','short_description','description','sort_order'].forEach(k => {
+      ['name','slug','sku','sub_category','short_description','description','notes_top','notes_middle','notes_base','gender','sort_order'].forEach(k => {
         const el = form.querySelector(`[name=${k}]`);
         if (el) el.value = product[k] ?? '';
       });
@@ -107,21 +114,41 @@ window.AdminProducts = (() => {
       const variants = Array.isArray(product.variants) ? product.variants : [];
       variants.forEach(v => addVariantRow(v));
     }
+
     if (!form.querySelector('#variants-container').children.length) addVariantRow();
     renderImages();
     AdminUI.openModal('product-modal');
   }
 
+  // ⭐ Variant row: 5 fields (size, price, old_price, cost_price, stock)
   function addVariantRow(v = {}) {
     const container = document.getElementById('variants-container');
     const row = document.createElement('div');
     row.className = 'variant-row';
+    row.style.cssText = 'display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1fr 44px;gap:8px;margin-bottom:12px;align-items:end;padding:12px;background:var(--a-bg-2);border-radius:8px;border:1px solid var(--a-line);';
+
     row.innerHTML = `
-      <input class="form-control" placeholder="Size (e.g. 6ml)" data-v="size" value="${AdminUI.escape(v.size || '')}">
-      <input class="form-control" type="number" placeholder="Price" data-v="price" value="${v.price ?? ''}">
-      <input class="form-control" type="number" placeholder="Old price" data-v="old_price" value="${v.old_price ?? ''}">
-      <input class="form-control" type="number" placeholder="Stock" data-v="stock" value="${v.stock ?? ''}">
-      <button type="button" class="rm-variant">×</button>
+      <div>
+        <label style="font-size:.65rem;color:var(--a-muted);display:block;margin-bottom:3px;letter-spacing:1px;">SIZE</label>
+        <input class="form-control" placeholder="6ml" data-v="size" value="${AdminUI.escape(v.size || '')}">
+      </div>
+      <div>
+        <label style="font-size:.65rem;color:var(--a-gold-l);display:block;margin-bottom:3px;letter-spacing:1px;">SELLING</label>
+        <input class="form-control" type="number" placeholder="850" data-v="price" value="${v.price ?? ''}">
+      </div>
+      <div>
+        <label style="font-size:.65rem;color:var(--a-muted);display:block;margin-bottom:3px;letter-spacing:1px;">OLD PRICE</label>
+        <input class="form-control" type="number" placeholder="1100" data-v="old_price" value="${v.old_price ?? ''}">
+      </div>
+      <div>
+        <label style="font-size:.65rem;color:var(--a-red);display:block;margin-bottom:3px;letter-spacing:1px;">COST</label>
+        <input class="form-control" type="number" placeholder="500" data-v="cost_price" value="${v.cost_price ?? ''}">
+      </div>
+      <div>
+        <label style="font-size:.65rem;color:var(--a-muted);display:block;margin-bottom:3px;letter-spacing:1px;">STOCK</label>
+        <input class="form-control" type="number" placeholder="40" data-v="stock" value="${v.stock ?? ''}">
+      </div>
+      <button type="button" class="rm-variant" style="background:transparent;border:1px solid var(--a-line);color:var(--a-red);border-radius:6px;height:38px;font-size:1.2rem;cursor:pointer;" title="Remove">×</button>
     `;
     row.querySelector('.rm-variant').addEventListener('click', () => row.remove());
     container.appendChild(row);
@@ -134,9 +161,16 @@ window.AdminProducts = (() => {
       const size = r.querySelector('[data-v=size]').value.trim();
       const price = r.querySelector('[data-v=price]').value.trim();
       const old_price = r.querySelector('[data-v=old_price]').value.trim();
+      const cost_price = r.querySelector('[data-v=cost_price]').value.trim();
       const stock = r.querySelector('[data-v=stock]').value.trim();
       if (!size && !price) return;
-      list.push({ size: size || 'Default', price: Number(price) || 0, old_price: Number(old_price) || 0, stock: Number(stock) || 0 });
+      list.push({
+        size: size || 'Default',
+        price: Number(price) || 0,
+        old_price: Number(old_price) || 0,
+        cost_price: Number(cost_price) || 0,
+        stock: Number(stock) || 0
+      });
     });
     return list;
   }
@@ -174,11 +208,9 @@ window.AdminProducts = (() => {
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
           canvas.toBlob(b => resolve(b), 'image/jpeg', quality);
         };
-        img.onerror = reject;
-        img.src = reader.result;
+        img.onerror = reject; img.src = reader.result;
       };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
+      reader.onerror = reject; reader.readAsDataURL(file);
     });
   }
 
@@ -204,18 +236,36 @@ window.AdminProducts = (() => {
     const form = e.target;
     const fd = Object.fromEntries(new FormData(form).entries());
     const id = fd.id;
+    const variants = getVariants();
+
+    // ⭐ If variants exist, base_price = cheapest variant's price
+    let basePrice = Number(fd.base_price) || 0;
+    let costPrice = Number(fd.cost_price) || 0;
+    if (variants.length > 0) {
+      const validPrices = variants.map(v => Number(v.price) || 0).filter(p => p > 0);
+      const validCosts = variants.map(v => Number(v.cost_price) || 0).filter(c => c >= 0);
+      basePrice = validPrices.length ? Math.min(...validPrices) : 0;
+      costPrice = validCosts.length ? Math.min(...validCosts) : 0;
+    }
+
     const payload = {
       name: (fd.name || '').trim(),
-      slug: slugify(fd.name),   // auto-generate
+      slug: (fd.slug || '').trim() || String(fd.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      sku: fd.sku || null,
       category_id: fd.category_id || null,
+      sub_category: fd.sub_category || null,
       short_description: fd.short_description || null,
       description: fd.description || null,
-      base_price: Number(fd.base_price) || 0,
-      cost_price: Number(fd.cost_price) || 0,
+      notes_top: fd.notes_top || null,
+      notes_middle: fd.notes_middle || null,
+      notes_base: fd.notes_base || null,
+      base_price: basePrice,
+      cost_price: costPrice,
       old_price: Number(fd.old_price) || null,
       stock: Number(fd.stock) || 0,
+      gender: fd.gender || 'Unisex',
       sort_order: Number(fd.sort_order) || 0,
-      variants: getVariants(),
+      variants: variants,
       images: currentImages,
       is_active: form.querySelector('[name=is_active]').checked,
       is_featured: form.querySelector('[name=is_featured]').checked,
@@ -225,10 +275,13 @@ window.AdminProducts = (() => {
       is_bundle: form.querySelector('[name=is_bundle]').checked,
       is_gift_set: form.querySelector('[name=is_gift_set]').checked
     };
+
     if (!payload.name) return AdminUI.toast('Name required', 'error');
+    if (variants.length === 0 && basePrice <= 0) return AdminUI.toast('Add at least one variant or price', 'error');
 
     const btn = document.getElementById('product-save-btn');
     btn.disabled = true; btn.textContent = 'Saving…';
+
     try {
       if (id) {
         const { error } = await sb.from('products').update(payload).eq('id', id);
@@ -236,21 +289,13 @@ window.AdminProducts = (() => {
         AdminUI.toast('Product updated', 'success');
       } else {
         const { error } = await sb.from('products').insert(payload);
-        if (error) {
-          // Agar slug already exists ho jaye to unique banao
-          if (error.code === '23505') {
-            payload.slug = payload.slug + '-' + Date.now();
-            const { error: e2 } = await sb.from('products').insert(payload);
-            if (e2) throw e2;
-          } else {
-            throw error;
-          }
-        }
+        if (error) throw error;
         AdminUI.toast('Product added', 'success');
       }
       AdminUI.closeModal('product-modal');
       offset = 0; fetchList();
     } catch (err) {
+      console.error(err);
       AdminUI.toast(err.message || 'Save failed', 'error');
     } finally {
       btn.disabled = false; btn.textContent = 'Save Product';
