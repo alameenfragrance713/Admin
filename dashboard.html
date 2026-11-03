@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <!-- ============ DASHBOARD ============ -->
+    <!-- DASHBOARD -->
     <section class="admin-section is-active" id="section-dashboard">
       <div class="stat-grid" id="stats-grid">
         <div class="stat-card skeleton" style="height:96px;"></div>
@@ -103,7 +103,7 @@
       </div>
     </section>
 
-    <!-- ============ BANNERS ============ -->
+    <!-- BANNERS -->
     <section class="admin-section" id="section-banners">
       <div class="panel">
         <div class="banner-toolbar">
@@ -116,14 +116,14 @@
         <div class="dropzone" id="banner-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
           <strong>Drop banner images here, or click to browse</strong>
-          <small>jpg, png, webp · max 5 MB each · auto-compressed to 1920px</small>
+          <small>jpg, png, webp · max 5 MB each</small>
           <input type="file" id="banner-file-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
         </div>
         <div class="banner-list" id="banner-list"></div>
       </div>
     </section>
 
-    <!-- ============ CATEGORIES ============ -->
+    <!-- CATEGORIES -->
     <section class="admin-section" id="section-categories">
       <div class="panel">
         <div class="banner-toolbar">
@@ -137,7 +137,7 @@
       </div>
     </section>
 
-    <!-- ============ PRODUCTS ============ -->
+    <!-- PRODUCTS -->
     <section class="admin-section" id="section-products">
       <div class="panel">
         <div class="toolbar">
@@ -153,8 +153,8 @@
         </div>
         <div class="table-wrap">
           <table class="admin-table">
-            <thead><tr><th>Image</th><th>Name</th><th>SKU</th><th>Category</th><th>Sell / Cost</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="products-tbody"><tr><td colspan="8" class="a-empty">Loading…</td></tr></tbody>
+            <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Sell / Cost</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="products-tbody"><tr><td colspan="7" class="a-empty">Loading…</td></tr></tbody>
           </table>
         </div>
         <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
@@ -164,7 +164,7 @@
       </div>
     </section>
 
-    <!-- ============ COUPONS ============ -->
+    <!-- COUPONS -->
     <section class="admin-section" id="section-coupons">
       <div class="panel">
         <div class="banner-toolbar">
@@ -187,7 +187,7 @@
       </div>
     </section>
 
-    <!-- ============ ORDERS ============ -->
+    <!-- ORDERS -->
     <section class="admin-section" id="section-orders">
       <div class="panel">
         <div class="toolbar">
@@ -213,7 +213,7 @@
       </div>
     </section>
 
-    <!-- ============ MESSAGES ============ -->
+    <!-- MESSAGES -->
     <section class="admin-section" id="section-messages">
       <div class="panel">
         <div class="banner-toolbar">
@@ -232,7 +232,7 @@
       </div>
     </section>
 
-    <!-- ============ SUBSCRIBERS ============ -->
+    <!-- SUBSCRIBERS -->
     <section class="admin-section" id="section-subscribers">
       <div class="panel">
         <div class="banner-toolbar">
@@ -254,7 +254,7 @@
       </div>
     </section>
 
-    <!-- ============ SETTINGS ============ -->
+    <!-- SETTINGS -->
     <section class="admin-section" id="section-settings">
       <div class="panel">
         <form id="settings-form">
@@ -329,7 +329,7 @@
   </div>
 </div>
 
-<!-- PRODUCT MODAL -->
+<!-- PRODUCT MODAL — SIMPLIFIED (No SKU, No Sub-category, No Notes) -->
 <div class="modal" id="product-modal">
   <div class="modal-box wide">
     <div class="modal-head">
@@ -341,18 +341,22 @@
       <input type="hidden" name="base_price" value="0">
       <input type="hidden" name="cost_price" value="0">
       <input type="hidden" name="old_price" value="0">
+      <input type="hidden" name="sku" value="">
+      <input type="hidden" name="sub_category" value="">
+      <input type="hidden" name="notes_top" value="">
+      <input type="hidden" name="notes_middle" value="">
+      <input type="hidden" name="notes_base" value="">
 
       <div class="form-row">
-        <div class="form-group"><label>Name *</label><input class="form-control" name="name" required></div>
-        <div class="form-group"><label>Slug (auto if blank)</label><input class="form-control" name="slug"></div>
-      </div>
-      <div class="form-row-3">
-        <div class="form-group"><label>SKU</label><input class="form-control" name="sku"></div>
-        <div class="form-group"><label>Category</label><select class="form-control" name="category_id" id="pf-category"></select></div>
-        <div class="form-group"><label>Sub-category</label><input class="form-control" name="sub_category"></div>
+        <div class="form-group"><label>Name *</label><input class="form-control" name="name" required placeholder="e.g. Royal Oud Attar"></div>
+        <div class="form-group"><label>Slug (auto if blank)</label><input class="form-control" name="slug" placeholder="e.g. royal-oud-attar"></div>
       </div>
 
       <div class="form-row">
+        <div class="form-group">
+          <label>Category</label>
+          <select class="form-control" name="category_id" id="pf-category"></select>
+        </div>
         <div class="form-group">
           <label>Gender</label>
           <select class="form-control" name="gender">
@@ -361,20 +365,16 @@
             <option value="Women">Women</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Total Stock (auto from variants)</label>
-          <input type="number" class="form-control" name="stock" value="0" readonly style="background:var(--a-bg-3);">
-          <small style="color:var(--a-muted);font-size:.7rem;">Har variant ka stock neeche set karein — ye auto calculate hoga.</small>
-        </div>
       </div>
 
-      <div class="form-group"><label>Short Description</label><input class="form-control" name="short_description"></div>
-      <div class="form-group"><label>Full Description</label><textarea class="form-control" name="description"></textarea></div>
-      <div class="form-row-3">
-        <div class="form-group"><label>Top Notes</label><input class="form-control" name="notes_top"></div>
-        <div class="form-group"><label>Middle Notes</label><input class="form-control" name="notes_middle"></div>
-        <div class="form-group"><label>Base Notes</label><input class="form-control" name="notes_base"></div>
+      <div class="form-group">
+        <label>Total Stock (auto from variants)</label>
+        <input type="number" class="form-control" name="stock" value="0" readonly style="background:var(--a-bg-3);">
+        <small style="color:var(--a-muted);font-size:.7rem;">Har variant ka stock neeche set karein — ye auto calculate hoga.</small>
       </div>
+
+      <div class="form-group"><label>Short Description</label><input class="form-control" name="short_description" placeholder="One-line description"></div>
+      <div class="form-group"><label>Full Description</label><textarea class="form-control" name="description" placeholder="Full product description…"></textarea></div>
 
       <!-- ⭐ VARIANTS — 5 fields per row -->
       <div class="form-group">
@@ -502,7 +502,7 @@
 <div class="admin-toast-wrap" id="admin-toast-wrap"></div>
 
 <!-- ============================================================
-     SCRIPTS — order matters
+     SCRIPTS
      ============================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
