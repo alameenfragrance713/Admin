@@ -1,489 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Admin Dashboard — Al Ameen Fragrance</title>
-  <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230b0b0c'/><text x='50' y='65' text-anchor='middle' fill='%23d4af37' font-family='Georgia' font-size='42' font-weight='bold'>A</text></svg>">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/admin.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Dashboard — Al Ameen Fragrance</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230b0b0c'/><text x='50' y='65' text-anchor='middle' fill='%23d4af37' font-family='Georgia' font-size='42' font-weight='bold'>A</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
 </head>
-
 <body class="admin-body">
 
-  <div class="admin-shell">
+<div class="admin-shell">
 
-    <!-- ============ SIDEBAR ============ -->
-    <aside class="admin-sidebar" id="admin-sidebar">
-      <div class="sidebar-brand">
-        <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#b8923a);color:#000;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;flex-shrink:0;">A</div>
-        <div><strong>AL AMEEN</strong><small>Admin Panel</small></div>
-      </div>
-      <ul class="sidebar-nav">
-        <li><button data-section="dashboard" class="is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</button></li>
-        <li><button data-section="banners"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>Banners</button></li>
-        <li><button data-section="categories"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Categories</button></li>
-        <li><button data-section="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7 12 3 4 7v10l8 4 8-4z"/><path d="M4 7l8 4 8-4M12 21V11"/></svg>Products</button></li>
-        <li><button data-section="coupons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Coupons</button></li>
-        <li><button data-section="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h12l2 5H4z"/><path d="M4 7v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7"/><path d="M9 11h6M9 15h6"/></svg>Orders</button></li>
-        <li><button data-section="messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Messages</button></li>
-        <li><button data-section="subscribers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Subscribers</button></li>
-        <li><button data-section="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</button></li>
-      </ul>
-      <div class="sidebar-footer">
-        <div id="admin-email">—</div>
-        <button id="logout-btn">Logout</button>
-      </div>
-    </aside>
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand">
+      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#b8923a);color:#000;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;flex-shrink:0;">A</div>
+      <div><strong>AL AMEEN</strong><small>Admin Panel</small></div>
+    </div>
+    <ul class="sidebar-nav">
+      <li><button data-section="dashboard" class="is-active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard</button></li>
+      <li><button data-section="banners">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        Banners</button></li>
+      <li><button data-section="categories">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Categories</button></li>
+      <li><button data-section="products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7 12 3 4 7v10l8 4 8-4z"/><path d="M4 7l8 4 8-4M12 21V11"/></svg>
+        Products</button></li>
+      <li><button data-section="coupons">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Coupons</button></li>
+      <li><button data-section="orders">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h12l2 5H4z"/><path d="M4 7v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7"/><path d="M9 11h6M9 15h6"/></svg>
+        Orders</button></li>
+      <li><button data-section="messages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Messages</button></li>
+      <li><button data-section="subscribers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Subscribers</button></li>
+      <li><button data-section="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings</button></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div id="admin-email">—</div>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </aside>
 
-    <!-- ============ MAIN CONTENT ============ -->
-    <main class="admin-main">
-      <div class="admin-topbar">
-        <div style="display:flex;gap:12px;align-items:center;">
-          <button class="admin-mobile-toggle" id="admin-menu-toggle" aria-label="Menu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  <!-- ============ MAIN ============ -->
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <button class="admin-mobile-toggle" id="admin-menu-toggle" aria-label="Menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+        <div>
+          <h1 id="page-title">Dashboard</h1>
+          <div class="subtitle" id="page-subtitle">Overview of your store</div>
+        </div>
+      </div>
+      <div class="admin-user-chip">
+        <span class="avatar" id="user-avatar">A</span>
+        <span id="user-label">Admin</span>
+      </div>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="admin-section is-active" id="section-dashboard">
+      <div class="stat-grid" id="stats-grid">
+        <div class="stat-card skeleton" style="height:96px;"></div>
+        <div class="stat-card skeleton" style="height:96px;"></div>
+        <div class="stat-card skeleton" style="height:96px;"></div>
+        <div class="stat-card skeleton" style="height:96px;"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>Orders — Last 7 Days</h2></div>
+        <div class="chart-wrap">
+          <div class="chart-bars" id="chart-bars"></div>
+          <div class="chart-labels" id="chart-labels"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Latest 10 Orders</h2>
+          <button class="btn btn-ghost btn-sm" data-goto="orders">View All</button>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Total</th><th>Profit</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="latest-orders-body"><tr><td colspan="7" class="a-empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BANNERS ============ -->
+    <section class="admin-section" id="section-banners">
+      <div class="panel">
+        <div class="banner-toolbar">
           <div>
-            <h1 id="page-title">Dashboard</h1>
-            <div class="subtitle" id="page-subtitle">Overview of your store</div>
+            <h2 style="margin:0;">Hero Banners</h2>
+            <p class="muted small" style="margin:4px 0 0;">Upload images from your device. Drag to reorder.</p>
           </div>
+          <button class="btn btn-gold" id="banner-save-all">Save Changes</button>
         </div>
-        <div class="admin-user-chip"><span class="avatar" id="user-avatar">A</span><span id="user-label">Admin</span></div>
+        <div class="dropzone" id="banner-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
+          <strong>Drop banner images here, or click to browse</strong>
+          <small>jpg, png, webp · max 5 MB each · auto-compressed to 1920px</small>
+          <input type="file" id="banner-file-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
+        </div>
+        <div class="banner-list" id="banner-list"></div>
       </div>
+    </section>
 
-      <!-- ============ DASHBOARD ============ -->
-      <section class="admin-section is-active" id="section-dashboard">
-        <div class="stat-grid" id="stats-grid">
-          <div class="stat-card skeleton" style="height:96px;"></div>
-          <div class="stat-card skeleton" style="height:96px;"></div>
-          <div class="stat-card skeleton" style="height:96px;"></div>
-          <div class="stat-card skeleton" style="height:96px;"></div>
+    <!-- ============ CATEGORIES ============ -->
+    <section class="admin-section" id="section-categories">
+      <div class="panel">
+        <div class="banner-toolbar">
+          <div>
+            <h2 style="margin:0;">Categories</h2>
+            <p class="muted small" style="margin:4px 0 0;">Toggle OFF to hide. Drag to reorder.</p>
+          </div>
+          <button class="btn btn-gold" id="category-add-btn">+ Add Category</button>
         </div>
-        <div class="panel">
-          <div class="panel-head"><h2>Orders — Last 7 Days</h2></div>
-          <div class="chart-wrap"><div class="chart-bars" id="chart-bars"></div><div class="chart-labels" id="chart-labels"></div></div>
+        <div class="category-list" id="category-list"></div>
+      </div>
+    </section>
+
+    <!-- ============ PRODUCTS ============ -->
+    <section class="admin-section" id="section-products">
+      <div class="panel">
+        <div class="toolbar">
+          <input type="text" id="prod-search" class="form-control" placeholder="Search products…">
+          <select id="prod-cat-filter" class="form-control"></select>
+          <select id="prod-active-filter" class="form-control">
+            <option value="">All</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <span class="spacer"></span>
+          <button class="btn btn-gold" id="prod-add-btn">+ Add Product</button>
         </div>
-        <div class="panel">
-          <div class="panel-head"><h2>Latest 10 Orders</h2><button class="btn btn-ghost btn-sm" data-goto="orders">View All</button></div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Total</th><th>Profit</th><th>Status</th><th>Date</th></tr></thead>
-              <tbody id="latest-orders-body"><tr><td colspan="7" class="a-empty">Loading…</td></tr></tbody>
-            </table>
-          </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Image</th><th>Name</th><th>SKU</th><th>Category</th><th>Sell / Cost</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="products-tbody"><tr><td colspan="8" class="a-empty">Loading…</td></tr></tbody>
+          </table>
         </div>
-      </section>
-
-      <!-- ============ BANNERS ============ -->
-      <section class="admin-section" id="section-banners">
-        <div class="panel">
-          <div class="banner-toolbar">
-            <div><h2 style="margin:0;">Hero Banners</h2><p class="muted small" style="margin:4px 0 0;">Upload images from your device. Drag to reorder.</p></div>
-            <button class="btn btn-gold" id="banner-save-all">Save Changes</button>
-          </div>
-          <div class="dropzone" id="banner-dropzone">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
-            <strong>Drop banner images here, or click to browse</strong>
-            <small>jpg, png, webp · max 5 MB each</small>
-            <input type="file" id="banner-file-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
-          </div>
-          <div class="banner-list" id="banner-list"></div>
+        <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+          <span class="subtitle" id="products-count">0 products</span>
+          <button class="btn btn-ghost" id="prod-load-more" style="display:none;">Load More</button>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ============ CATEGORIES ============ -->
-      <section class="admin-section" id="section-categories">
-        <div class="panel">
-          <div class="banner-toolbar">
-            <div><h2 style="margin:0;">Categories</h2><p class="muted small" style="margin:4px 0 0;">Toggle OFF to hide. Drag to reorder.</p></div>
-            <button class="btn btn-gold" id="category-add-btn">+ Add Category</button>
+    <!-- ============ COUPONS ============ -->
+    <section class="admin-section" id="section-coupons">
+      <div class="panel">
+        <div class="banner-toolbar">
+          <div>
+            <h2 style="margin:0;">Coupons &amp; Promo Codes</h2>
+            <p class="muted small" style="margin:4px 0 0;">Create discount codes customers can apply at checkout.</p>
           </div>
-          <div class="category-list" id="category-list"></div>
+          <button class="btn btn-gold" id="coupon-add-btn">+ New Coupon</button>
         </div>
-      </section>
-
-      <!-- ============ PRODUCTS ============ -->
-      <section class="admin-section" id="section-products">
-        <div class="panel">
-          <div class="toolbar">
-            <input type="text" id="prod-search" class="form-control" placeholder="Search products…">
-            <select id="prod-cat-filter" class="form-control"></select>
-            <select id="prod-active-filter" class="form-control">
-              <option value="">All</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-            <span class="spacer"></span>
-            <button class="btn btn-gold" id="prod-add-btn">+ Add Product</button>
-          </div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Sell / Cost</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="products-tbody"><tr><td colspan="7" class="a-empty">Loading…</td></tr></tbody>
-            </table>
-          </div>
-          <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
-            <span class="subtitle" id="products-count">0 products</span>
-            <button class="btn btn-ghost" id="prod-load-more" style="display:none;">Load More</button>
-          </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Code</th><th>Discount</th><th>Min Order</th><th>Used</th><th>Expires</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="coupons-tbody"><tr><td colspan="7" class="a-empty">Loading…</td></tr></tbody>
+          </table>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ============ COUPONS ============ -->
-      <section class="admin-section" id="section-coupons">
-        <div class="panel">
-          <div class="banner-toolbar">
-            <div><h2 style="margin:0;">Coupons &amp; Promo Codes</h2><p class="muted small" style="margin:4px 0 0;">Create discount codes customers can apply at checkout.</p></div>
-            <button class="btn btn-gold" id="coupon-add-btn">+ New Coupon</button>
-          </div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead><tr><th>Code</th><th>Discount</th><th>Min Order</th><th>Used</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="coupons-tbody"><tr><td colspan="7" class="a-empty">Loading…</td></tr></tbody>
-            </table>
-          </div>
+    <!-- ============ ORDERS ============ -->
+    <section class="admin-section" id="section-orders">
+      <div class="panel">
+        <div class="toolbar">
+          <input type="text" id="ord-search" class="form-control" placeholder="Search order # / name / phone…">
+          <select id="ord-status-filter" class="form-control">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <input type="date" id="ord-date-filter" class="form-control">
+          <span class="spacer"></span>
+          <button class="btn btn-ghost" id="ord-export">Export CSV</button>
         </div>
-      </section>
-
-      <!-- ============ ORDERS ============ -->
-      <section class="admin-section" id="section-orders">
-        <div class="panel">
-          <div class="toolbar">
-            <input type="text" id="ord-search" class="form-control" placeholder="Search order # / name / phone…">
-            <select id="ord-status-filter" class="form-control">
-              <option value="">All Statuses</option>
-              <option value="pending">Pending</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="shipped">Shipped</option>
-              <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-            <input type="date" id="ord-date-filter" class="form-control">
-            <span class="spacer"></span>
-            <button class="btn btn-ghost" id="ord-export">Export CSV</button>
-          </div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>City</th><th>Total</th><th>Profit</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-              <tbody id="orders-tbody"><tr><td colspan="9" class="a-empty">Loading…</td></tr></tbody>
-            </table>
-          </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>City</th><th>Total</th><th>Profit</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="orders-tbody"><tr><td colspan="9" class="a-empty">Loading…</td></tr></tbody>
+          </table>
         </div>
+      </div>
+    </section>
 
-        <!-- ⭐ BACKUP & CLEANUP PANEL -->
-        <div class="panel" style="border-color:var(--a-gold);">
-          <div class="panel-head">
-            <h2>📦 Backup &amp; Storage Cleanup</h2>
+    <!-- ============ MESSAGES ============ -->
+    <section class="admin-section" id="section-messages">
+      <div class="panel">
+        <div class="banner-toolbar">
+          <div>
+            <h2 style="margin:0;">Messages</h2>
+            <p class="muted small" style="margin:4px 0 0;">Contact form submissions from customers.</p>
           </div>
-          <p class="muted small" style="margin-top:0;">Download a full backup (orders + items) as JSON, or delete old orders to free up database space.</p>
-
-          <div class="form-row" style="margin-top:16px;">
-            <div class="form-group">
-              <label>Backup / Delete — From Date</label>
-              <input type="date" id="backup-from" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>Backup / Delete — To Date</label>
-              <input type="date" id="backup-to" class="form-control">
-            </div>
-          </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
-            <button class="btn btn-gold" id="backup-download">⬇️ Download Backup (JSON)</button>
-            <button class="btn btn-ghost" id="backup-download-csv">⬇️ Download Backup (CSV)</button>
-            <button class="btn btn-danger" id="backup-delete-old" style="margin-left:auto;">🗑️ Delete Orders in Range</button>
-          </div>
-          <p class="muted small" style="margin:12px 0 0;">
-            ⚠️ <strong>Delete kaam permanent hai</strong> — pehle backup download karein. Sirf <strong>delivered</strong> aur <strong>cancelled</strong> orders delete honge, pending/confirmed/shipped safe rahenge.
-          </p>
+          <button class="btn btn-ghost btn-sm" id="msg-copy-template">📋 Copy Message Template</button>
         </div>
-      </section>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Date</th><th>Name</th><th>Contact</th><th>Subject</th><th>Message</th><th>Actions</th></tr></thead>
+            <tbody id="messages-tbody"><tr><td colspan="6" class="a-empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-      <!-- ============ MESSAGES ============ -->
-      <section class="admin-section" id="section-messages">
-        <div class="panel">
-          <div class="banner-toolbar">
-            <div><h2 style="margin:0;">Messages</h2><p class="muted small" style="margin:4px 0 0;">Contact form submissions from customers.</p></div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn btn-ghost btn-sm" id="msg-copy-template">📋 Copy Message Template</button>
-            </div>
+    <!-- ============ SUBSCRIBERS ============ -->
+    <section class="admin-section" id="section-subscribers">
+      <div class="panel">
+        <div class="banner-toolbar">
+          <div>
+            <h2 style="margin:0;">Newsletter Subscribers</h2>
+            <p class="muted small" style="margin:4px 0 0;">Export email list or send promo messages via WhatsApp.</p>
           </div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead><tr><th>Date</th><th>Name</th><th>Contact</th><th>Subject</th><th>Message</th><th>Actions</th></tr></thead>
-              <tbody id="messages-tbody"><tr><td colspan="6" class="a-empty">Loading…</td></tr></tbody>
-            </table>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" id="subs-copy-template">📋 Copy Promo Template</button>
+            <button class="btn btn-ghost btn-sm" id="subs-export">Export CSV</button>
           </div>
         </div>
-
-        <!-- ⭐ PRODUCT BROADCAST TO CONTACTS -->
-        <div class="panel" style="border-color:var(--a-gold);">
-          <div class="panel-head"><h2>📣 Product Broadcast (WhatsApp / Email)</h2></div>
-          <p class="muted small" style="margin-top:0;">Select a product — ready-made message generate hoga. Phir "Copy for WhatsApp" ya "Copy for Email" button se message copy karein aur customer ko bhejein.</p>
-
-          <div class="form-row" style="margin-top:16px;">
-            <div class="form-group">
-              <label>Select Product</label>
-              <select id="broadcast-product-select" class="form-control"><option value="">— Select Product —</option></select>
-            </div>
-            <div class="form-group">
-              <label>Discount Text (optional)</label>
-              <input type="text" id="broadcast-discount-text" class="form-control" placeholder="e.g. 20% OFF this week only">
-            </div>
-          </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
-            <button class="btn btn-gold" id="broadcast-copy-wa">📱 Copy for WhatsApp</button>
-            <button class="btn btn-ghost" id="broadcast-copy-email">✉️ Copy for Email</button>
-          </div>
-
-          <div class="form-group" style="margin-top:16px;">
-            <label>Message Preview</label>
-            <textarea id="broadcast-preview" class="form-control" rows="8" readonly style="font-family:monospace;font-size:.8rem;"></textarea>
-          </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Email</th><th>Subscribed</th><th>Actions</th></tr></thead>
+            <tbody id="subs-tbody"><tr><td colspan="3" class="a-empty">Loading…</td></tr></tbody>
+          </table>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ============ SUBSCRIBERS ============ -->
-      <section class="admin-section" id="section-subscribers">
-        <div class="panel">
-          <div class="banner-toolbar">
-            <div><h2 style="margin:0;">Newsletter Subscribers</h2><p class="muted small" style="margin:4px 0 0;">Export email list or send promo messages via WhatsApp.</p></div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn btn-ghost btn-sm" id="subs-copy-template">📋 Copy Promo Template</button>
-              <button class="btn btn-ghost btn-sm" id="subs-export">Export CSV</button>
-            </div>
+    <!-- ============ SETTINGS ============ -->
+    <section class="admin-section" id="section-settings">
+      <div class="panel">
+        <form id="settings-form">
+          <h2 style="margin-bottom:16px;">Store Settings</h2>
+          <div class="form-row">
+            <div class="form-group"><label>Store Name</label><input class="form-control" name="store_name"></div>
+            <div class="form-group"><label>Announcement Bar</label><input class="form-control" name="announcement"></div>
           </div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead><tr><th>Email</th><th>Subscribed</th><th>Actions</th></tr></thead>
-              <tbody id="subs-tbody"><tr><td colspan="3" class="a-empty">Loading…</td></tr></tbody>
-            </table>
+          <div class="form-row-3">
+            <div class="form-group"><label>Shipping Charge (Rs.)</label><input type="number" class="form-control" name="shipping_charge"></div>
+            <div class="form-group"><label>Free Shipping Above (Rs.)</label><input type="number" class="form-control" name="free_shipping_threshold"></div>
+            <div class="form-group"><label>WhatsApp (digits only)</label><input class="form-control" name="whatsapp_number"></div>
           </div>
-        </div>
-
-        <!-- ⭐ SUBSCRIBER PRODUCT BROADCAST -->
-        <div class="panel" style="border-color:var(--a-gold);">
-          <div class="panel-head"><h2>📣 Send New Product to All Subscribers</h2></div>
-          <p class="muted small" style="margin-top:0;">Naya product select karein — ready message banega jo aap har subscriber ko WhatsApp / Email pe bhej sakte hain.</p>
-
-          <div class="form-row" style="margin-top:16px;">
-            <div class="form-group">
-              <label>Select Product</label>
-              <select id="subs-broadcast-product" class="form-control"><option value="">— Select Product —</option></select>
-            </div>
-            <div class="form-group">
-              <label>Discount / Offer Text (optional)</label>
-              <input type="text" id="subs-broadcast-offer" class="form-control" placeholder="e.g. Eid special 20% off">
-            </div>
+          <div class="form-row">
+            <div class="form-group"><label>Email</label><input class="form-control" name="email"></div>
+            <div class="form-group"><label>Phone</label><input class="form-control" name="phone"></div>
           </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
-            <button class="btn btn-gold" id="subs-copy-wa">📱 Copy WhatsApp Message</button>
-            <button class="btn btn-ghost" id="subs-copy-email">✉️ Copy Email Message</button>
-            <a href="#" id="subs-open-wa-web" class="btn btn-ghost" target="_blank" rel="noopener" style="display:none;">Open WhatsApp Web</a>
+          <div class="form-group"><label>Address</label><input class="form-control" name="address"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Facebook URL</label><input class="form-control" name="facebook"></div>
+            <div class="form-group"><label>Instagram URL</label><input class="form-control" name="instagram"></div>
           </div>
-
-          <div class="form-group" style="margin-top:16px;">
-            <label>Message Preview</label>
-            <textarea id="subs-broadcast-preview" class="form-control" rows="8" readonly style="font-family:monospace;font-size:.8rem;"></textarea>
+          <div class="form-row">
+            <div class="form-group"><label>TikTok URL</label><input class="form-control" name="tiktok"></div>
+            <div class="form-group"><label>YouTube URL</label><input class="form-control" name="youtube"></div>
           </div>
-        </div>
-      </section>
+          <button type="submit" class="btn btn-gold">Save Settings</button>
+        </form>
+      </div>
+    </section>
 
-      <!-- ============ SETTINGS ============ -->
-      <section class="admin-section" id="section-settings">
-        <div class="panel">
-          <form id="settings-form">
-            <h2 style="margin-bottom:16px;">Store Settings</h2>
-            <div class="form-row">
-              <div class="form-group"><label>Store Name</label><input class="form-control" name="store_name"></div>
-              <div class="form-group"><label>Announcement Bar</label><input class="form-control" name="announcement"></div>
-            </div>
-            <div class="form-row-3">
-              <div class="form-group"><label>Shipping Charge (Rs.)</label><input type="number" class="form-control" name="shipping_charge"></div>
-              <div class="form-group"><label>Free Shipping Above (Rs.)</label><input type="number" class="form-control" name="free_shipping_threshold"></div>
-              <div class="form-group"><label>WhatsApp (digits only)</label><input class="form-control" name="whatsapp_number"></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label>Email</label><input class="form-control" name="email"></div>
-              <div class="form-group"><label>Phone</label><input class="form-control" name="phone"></div>
-            </div>
-            <div class="form-group"><label>Address</label><input class="form-control" name="address"></div>
-            <div class="form-row">
-              <div class="form-group"><label>Facebook URL</label><input class="form-control" name="facebook"></div>
-              <div class="form-group"><label>Instagram URL</label><input class="form-control" name="instagram"></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label>TikTok URL</label><input class="form-control" name="tiktok"></div>
-              <div class="form-group"><label>YouTube URL</label><input class="form-control" name="youtube"></div>
-            </div>
-            <button type="submit" class="btn btn-gold">Save Settings</button>
-          </form>
-        </div>
-      </section>
+  </main>
+</div>
 
-    </main>
-  </div>
-
-  <!-- ============================================================
+<!-- ============================================================
      MODALS
      ============================================================ -->
 
-  <!-- CATEGORY MODAL -->
-  <div class="modal" id="category-modal">
-    <div class="modal-box">
-      <div class="modal-head"><h2>Add Category</h2><button class="modal-close" data-close-modal="category-modal">×</button></div>
-      <form id="category-form">
-        <div class="form-group"><label>Category Name *</label><input class="form-control" name="name" required placeholder="e.g. Oud Collection"></div>
-        <div class="form-group"><label>Slug (auto if blank)</label><input class="form-control" name="slug" placeholder="e.g. oud-collection"></div>
-        <div class="form-group">
-          <label>Image (from your device) *</label>
-          <div class="dropzone" id="cat-image-dropzone" style="padding:20px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
-            <strong style="font-size:.85rem;">Click or drop an image</strong>
-            <small>jpg, png, webp · max 5 MB</small>
-            <input type="file" id="cat-image-input" accept="image/jpeg,image/png,image/webp" hidden>
-          </div>
-          <div id="cat-image-preview" style="margin-top:10px;"></div>
-        </div>
-        <div class="form-group"><label>Parent Category (leave empty for top-level)</label><select class="form-control" name="parent_id" id="cf-parent"></select></div>
-        <div class="checkbox-row"><input type="checkbox" name="is_active" id="cf-active" checked><label for="cf-active" style="margin:0;">Visible on website</label></div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-ghost" data-close-modal="category-modal">Cancel</button>
-          <button type="submit" class="btn btn-gold" id="cat-save-btn">Save Category</button>
-        </div>
-      </form>
+<!-- CATEGORY MODAL -->
+<div class="modal" id="category-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Add Category</h2>
+      <button class="modal-close" data-close-modal="category-modal">×</button>
     </div>
+    <form id="category-form">
+      <div class="form-group"><label>Category Name *</label><input class="form-control" name="name" required placeholder="e.g. Oud Collection"></div>
+      <div class="form-group"><label>Slug (auto if blank)</label><input class="form-control" name="slug" placeholder="e.g. oud-collection"></div>
+      <div class="form-group">
+        <label>Image (from your device) *</label>
+        <div class="dropzone" id="cat-image-dropzone" style="padding:20px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
+          <strong style="font-size:.85rem;">Click or drop an image</strong>
+          <small>jpg, png, webp · max 5 MB</small>
+          <input type="file" id="cat-image-input" accept="image/jpeg,image/png,image/webp" hidden>
+        </div>
+        <div id="cat-image-preview" style="margin-top:10px;"></div>
+      </div>
+      <div class="form-group">
+        <label>Parent Category (leave empty for top-level)</label>
+        <select class="form-control" name="parent_id" id="cf-parent"></select>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" name="is_active" id="cf-active" checked>
+        <label for="cf-active" style="margin:0;">Visible on website</label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="category-modal">Cancel</button>
+        <button type="submit" class="btn btn-gold" id="cat-save-btn">Save Category</button>
+      </div>
+    </form>
   </div>
+</div>
 
-  <!-- PRODUCT MODAL (SIMPLIFIED) -->
-  <div class="modal" id="product-modal">
-    <div class="modal-box wide">
-      <div class="modal-head"><h2 id="product-modal-title">Add Product</h2><button class="modal-close" data-close-modal="product-modal">×</button></div>
-      <form id="product-form">
-        <input type="hidden" name="id">
-
-        <div class="form-row">
-          <div class="form-group"><label>Product Name *</label><input class="form-control" name="name" required></div>
-          <div class="form-group"><label>Category</label><select class="form-control" name="category_id" id="pf-category"><option value="">— Select —</option></select></div>
-        </div>
-
-        <div class="form-row-3">
-          <div class="form-group"><label>Base Price (Selling) *</label><input type="number" class="form-control" name="base_price" required placeholder="e.g. 1000"></div>
-          <div class="form-group"><label>Old Price (Optional — for discount badge)</label><input type="number" class="form-control" name="old_price" placeholder="e.g. 1500"></div>
-          <div class="form-group"><label>Cost Price (Your Purchase)</label><input type="number" class="form-control" name="cost_price" placeholder="e.g. 600"></div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group"><label>Stock *</label><input type="number" class="form-control" name="stock" required></div>
-          <div class="form-group"><label>Sort Order</label><input type="number" class="form-control" name="sort_order" value="0"></div>
-        </div>
-
-        <div class="form-group"><label>Short Description</label><input class="form-control" name="short_description"></div>
-        <div class="form-group"><label>Full Description</label><textarea class="form-control" name="description"></textarea></div>
-
-        <div class="form-group">
-          <label>Variants (size / price / old price / stock)</label>
-          <div id="variants-container"></div>
-          <button type="button" class="btn btn-ghost btn-sm" id="add-variant-btn" style="margin-top:8px;">+ Add Variant</button>
-        </div>
-
-        <div class="form-group">
-          <label>Images</label>
-          <div class="img-uploader" id="images-uploader">
-            <button type="button" class="add-tile" id="upload-image-btn">+</button>
-            <input type="file" id="image-input" accept="image/*" multiple hidden>
-          </div>
-        </div>
-
-        <div class="form-row-3">
-          <div>
-            <div class="checkbox-row"><input type="checkbox" name="is_active" id="pf-active" checked><label for="pf-active" style="margin:0;">Active</label></div>
-            <div class="checkbox-row"><input type="checkbox" name="is_featured" id="pf-featured"><label for="pf-featured" style="margin:0;">Featured</label></div>
-            <div class="checkbox-row"><input type="checkbox" name="is_trending" id="pf-trending"><label for="pf-trending" style="margin:0;">Trending</label></div>
-          </div>
-          <div>
-            <div class="checkbox-row"><input type="checkbox" name="is_best_seller" id="pf-best"><label for="pf-best" style="margin:0;">Best Seller</label></div>
-            <div class="checkbox-row"><input type="checkbox" name="is_signature" id="pf-signature"><label for="pf-signature" style="margin:0;">Signature</label></div>
-          </div>
-          <div>
-            <div class="checkbox-row"><input type="checkbox" name="is_bundle" id="pf-bundle"><label for="pf-bundle" style="margin:0;">Bundle</label></div>
-            <div class="checkbox-row"><input type="checkbox" name="is_gift_set" id="pf-gift"><label for="pf-gift" style="margin:0;">Gift Set</label></div>
-          </div>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn btn-ghost" data-close-modal="product-modal">Cancel</button>
-          <button type="submit" class="btn btn-gold" id="product-save-btn">Save Product</button>
-        </div>
-      </form>
+<!-- PRODUCT MODAL -->
+<div class="modal" id="product-modal">
+  <div class="modal-box wide">
+    <div class="modal-head">
+      <h2 id="product-modal-title">Add Product</h2>
+      <button class="modal-close" data-close-modal="product-modal">×</button>
     </div>
-  </div>
+    <form id="product-form">
+      <input type="hidden" name="id">
+      <input type="hidden" name="base_price" value="0">
+      <input type="hidden" name="cost_price" value="0">
+      <input type="hidden" name="old_price" value="0">
 
-  <!-- COUPON MODAL -->
-  <div class="modal" id="coupon-modal">
-    <div class="modal-box">
-      <div class="modal-head"><h2 id="coupon-modal-title">New Coupon</h2><button class="modal-close" data-close-modal="coupon-modal">×</button></div>
-      <form id="coupon-form">
-        <p id="coupon-usage-note" style="display:none;font-size:.8rem;color:var(--a-muted);margin:0 0 12px;"></p>
+      <div class="form-row">
+        <div class="form-group"><label>Name *</label><input class="form-control" name="name" required></div>
+        <div class="form-group"><label>Slug (auto if blank)</label><input class="form-control" name="slug"></div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group"><label>SKU</label><input class="form-control" name="sku"></div>
+        <div class="form-group"><label>Category</label><select class="form-control" name="category_id" id="pf-category"></select></div>
+        <div class="form-group"><label>Sub-category</label><input class="form-control" name="sub_category"></div>
+      </div>
+
+      <div class="form-row">
         <div class="form-group">
-          <label>Coupon Code *</label>
-          <input class="form-control" name="code" required placeholder="e.g. EID20" maxlength="30" style="text-transform:uppercase;letter-spacing:2px;font-weight:600;">
-          <small style="color:var(--a-muted);font-size:.72rem;">Letters, numbers, _ and - only. Will auto-uppercase.</small>
+          <label>Gender</label>
+          <select class="form-control" name="gender">
+            <option value="Unisex">Unisex</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+          </select>
         </div>
-        <div class="form-group"><label>Description (internal)</label><input class="form-control" name="description" placeholder="e.g. Eid Sale 2026" maxlength="100"></div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Discount Type *</label>
-            <select class="form-control" name="discount_type" required>
-              <option value="percent">Percentage (%)</option>
-              <option value="flat">Flat Amount (Rs.)</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Discount Value *</label><input class="form-control" type="number" name="discount_value" required min="1" step="0.01" placeholder="e.g. 20"></div>
+        <div class="form-group">
+          <label>Total Stock (auto from variants)</label>
+          <input type="number" class="form-control" name="stock" value="0" readonly style="background:var(--a-bg-3);">
+          <small style="color:var(--a-muted);font-size:.7rem;">Har variant ka stock neeche set karein — ye auto calculate hoga.</small>
         </div>
-        <div class="form-row">
-          <div class="form-group"><label>Minimum Order (Rs.)</label><input class="form-control" type="number" name="min_order" min="0" value="0" placeholder="e.g. 1000"></div>
-          <div class="form-group"><label>Max Uses (leave empty = unlimited)</label><input class="form-control" type="number" name="max_uses" min="1" placeholder="e.g. 100"></div>
+      </div>
+
+      <div class="form-group"><label>Short Description</label><input class="form-control" name="short_description"></div>
+      <div class="form-group"><label>Full Description</label><textarea class="form-control" name="description"></textarea></div>
+      <div class="form-row-3">
+        <div class="form-group"><label>Top Notes</label><input class="form-control" name="notes_top"></div>
+        <div class="form-group"><label>Middle Notes</label><input class="form-control" name="notes_middle"></div>
+        <div class="form-group"><label>Base Notes</label><input class="form-control" name="notes_base"></div>
+      </div>
+
+      <!-- ⭐ VARIANTS — 5 fields per row -->
+      <div class="form-group">
+        <label>Variants — Har size ka apna price, old price, cost, stock</label>
+        <p style="font-size:.78rem;color:var(--a-muted);margin:0 0 12px;padding:8px 12px;background:var(--a-bg-2);border-radius:6px;border-left:3px solid var(--a-gold);">
+          <strong style="color:var(--a-gold-l);">Misaal:</strong> 6ml → Selling Rs. 850, Old Rs. 1100, Cost Rs. 500, Stock 40 &nbsp;|&nbsp; 12ml → Selling Rs. 1500, Old Rs. 1900, Cost Rs. 900, Stock 25
+        </p>
+        <div id="variants-container"></div>
+        <button type="button" class="btn btn-ghost btn-sm" id="add-variant-btn" style="margin-top:10px;">+ Add Variant</button>
+      </div>
+
+      <div class="form-group">
+        <label>Images</label>
+        <div class="img-uploader" id="images-uploader">
+          <button type="button" class="add-tile" id="upload-image-btn">+</button>
+          <input type="file" id="image-input" accept="image/*" multiple hidden>
         </div>
-        <div class="form-group"><label>Expires At (optional)</label><input class="form-control" type="datetime-local" name="expires_at"></div>
-        <div class="checkbox-row"><input type="checkbox" name="is_active" id="cf-coupon-active" checked><label for="cf-coupon-active" style="margin:0;">Active (customers can use it)</label></div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-ghost" data-close-modal="coupon-modal">Cancel</button>
-          <button type="submit" class="btn btn-gold" id="coupon-save-btn">Save Coupon</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group"><label>Sort Order</label><input type="number" class="form-control" name="sort_order" value="0"></div>
+        <div></div>
+      </div>
+
+      <div class="form-row-3">
+        <div>
+          <div class="checkbox-row"><input type="checkbox" name="is_active" id="pf-active" checked><label for="pf-active" style="margin:0;">Active</label></div>
+          <div class="checkbox-row"><input type="checkbox" name="is_featured" id="pf-featured"><label for="pf-featured" style="margin:0;">Featured</label></div>
+          <div class="checkbox-row"><input type="checkbox" name="is_trending" id="pf-trending"><label for="pf-trending" style="margin:0;">Trending</label></div>
         </div>
-      </form>
-    </div>
+        <div>
+          <div class="checkbox-row"><input type="checkbox" name="is_best_seller" id="pf-best"><label for="pf-best" style="margin:0;">Best Seller</label></div>
+          <div class="checkbox-row"><input type="checkbox" name="is_signature" id="pf-signature"><label for="pf-signature" style="margin:0;">Signature</label></div>
+        </div>
+        <div>
+          <div class="checkbox-row"><input type="checkbox" name="is_bundle" id="pf-bundle"><label for="pf-bundle" style="margin:0;">Bundle</label></div>
+          <div class="checkbox-row"><input type="checkbox" name="is_gift_set" id="pf-gift"><label for="pf-gift" style="margin:0;">Gift Set</label></div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="product-modal">Cancel</button>
+        <button type="submit" class="btn btn-gold" id="product-save-btn">Save Product</button>
+      </div>
+    </form>
   </div>
+</div>
 
-  <!-- ORDER DETAIL MODAL -->
-  <div class="modal" id="order-modal">
-    <div class="modal-box wide">
-      <div class="modal-head"><h2>Order Details</h2><button class="modal-close" data-close-modal="order-modal">×</button></div>
-      <div id="order-detail-content"></div>
+<!-- COUPON MODAL -->
+<div class="modal" id="coupon-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="coupon-modal-title">New Coupon</h2>
+      <button class="modal-close" data-close-modal="coupon-modal">×</button>
     </div>
+    <form id="coupon-form">
+      <p id="coupon-usage-note" style="display:none;font-size:.8rem;color:var(--a-muted);margin:0 0 12px;"></p>
+
+      <div class="form-group">
+        <label>Coupon Code *</label>
+        <input class="form-control" name="code" required placeholder="e.g. EID20" maxlength="30" style="text-transform:uppercase;letter-spacing:2px;font-weight:600;">
+        <small style="color:var(--a-muted);font-size:.72rem;">Letters, numbers, _ and - only. Will auto-uppercase.</small>
+      </div>
+
+      <div class="form-group">
+        <label>Description (internal)</label>
+        <input class="form-control" name="description" placeholder="e.g. Eid Sale 2026" maxlength="100">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Discount Type *</label>
+          <select class="form-control" name="discount_type" required>
+            <option value="percent">Percentage (%)</option>
+            <option value="flat">Flat Amount (Rs.)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Discount Value *</label>
+          <input class="form-control" type="number" name="discount_value" required min="1" step="0.01" placeholder="e.g. 20">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Minimum Order (Rs.)</label>
+          <input class="form-control" type="number" name="min_order" min="0" value="0" placeholder="e.g. 1000">
+        </div>
+        <div class="form-group">
+          <label>Max Uses (leave empty = unlimited)</label>
+          <input class="form-control" type="number" name="max_uses" min="1" placeholder="e.g. 100">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Expires At (optional)</label>
+        <input class="form-control" type="datetime-local" name="expires_at">
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" name="is_active" id="cf-coupon-active" checked>
+        <label for="cf-coupon-active" style="margin:0;">Active (customers can use it)</label>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="coupon-modal">Cancel</button>
+        <button type="submit" class="btn btn-gold" id="coupon-save-btn">Save Coupon</button>
+      </div>
+    </form>
   </div>
+</div>
 
-  <!-- Toast container -->
-  <div class="admin-toast-wrap" id="admin-toast-wrap"></div>
+<!-- ORDER DETAIL MODAL -->
+<div class="modal" id="order-modal">
+  <div class="modal-box wide">
+    <div class="modal-head">
+      <h2>Order Details</h2>
+      <button class="modal-close" data-close-modal="order-modal">×</button>
+    </div>
+    <div id="order-detail-content"></div>
+  </div>
+</div>
 
-  <!-- ============================================================
-     SCRIPTS — ORDER MATTERS!
+<!-- Toast container -->
+<div class="admin-toast-wrap" id="admin-toast-wrap"></div>
+
+<!-- ============================================================
+     SCRIPTS — order matters
      ============================================================ -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/admin-auth.js"></script>
-  <script src="js/admin-dashboard.js"></script>
-  <script src="js/admin-products.js"></script>
-  <script src="js/admin-orders.js"></script>
-  <script src="js/admin-banners.js"></script>
-  <script src="js/admin-categories.js"></script>
-  <script src="js/admin-coupons.js"></script>
-  <script src="js/admin-settings.js"></script>
-  <script src="js/admin-main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/admin-auth.js"></script>
+<script src="js/admin-dashboard.js"></script>
+<script src="js/admin-products.js"></script>
+<script src="js/admin-orders.js"></script>
+<script src="js/admin-banners.js"></script>
+<script src="js/admin-categories.js"></script>
+<script src="js/admin-coupons.js"></script>
+<script src="js/admin-settings.js"></script>
+<script src="js/admin-main.js"></script>
 </body>
 </html>
